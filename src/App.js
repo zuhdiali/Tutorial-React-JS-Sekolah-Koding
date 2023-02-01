@@ -1,55 +1,45 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Component } from "react";
-// STATE
-function Clicker() {
-  function handleClick(e) {
-    alert("berhasil mengklik!");
-    e.preventDefault();
-  }
+import List from './List';
 
-  return (
-    <a href="#" onClick={handleClick}>
-      Klik Bro Sis!
-    </a>
-  );
-}
-
-class Toggle extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggleStatus: true,
+      todoItem: "",
+      items: [],
     };
-
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
-    this.setState((state) => ({
-      toggleStatus: !state.toggleStatus,
-    }));
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.setState({
+      // items: this.state.items.concat([this.state.todoItem])
+      items: [...this.state.items, this.state.todoItem],
+      todoItem: ''
+    })
+  };
+
+  handleChange = (event) =>{
+    this.setState({
+      todoItem: event.target.value
+    })
+    console.log(this.state.todoItem)
   }
 
   render() {
     return (
-      <button onClick={this.handleClick}>
-        {this.state.toggleStatus ? "ON" : "OFF"}
-      </button>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input value={this.state.todoItem} onChange={this.handleChange} />
+          <button>Add</button>
+        </form>
+
+        <List items={this.state.items} />
+      </div>
     );
   }
-}
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Clicker />
-        <Toggle />
-      </header>
-    </div>
-  );
 }
 
 export default App;
